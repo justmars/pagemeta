@@ -282,6 +282,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#inspectedurl" class="md-nav__link">
+    InspectedURL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#siteheaders" class="md-nav__link">
+    SiteHeaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pagemeta" class="md-nav__link">
     PageMeta
   </a>
@@ -351,6 +365,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#inspectedurl" class="md-nav__link">
+    InspectedURL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#siteheaders" class="md-nav__link">
+    SiteHeaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pagemeta" class="md-nav__link">
     PageMeta
   </a>
@@ -402,8 +430,150 @@
 
 
 <h1 id="pagemeta-docs">pagemeta docs</h1>
+<h2 id="inspectedurl">InspectedURL</h2>
+<p><code>InspectedURL</code> is a dataclass whose function is to extract relevant metadata via <code>SiteHeaders</code> and <code>PageMeta</code>.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+  <div class="doc doc-contents first">
+
+
+
+        <details class="quote">
+          <summary>Source code in <code>pagemeta/main.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span> <span class="nc">InspectedURL</span><span class="p">:</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">headers</span><span class="p">:</span> <span class="n">SiteHeaders</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="n">meta</span><span class="p">:</span> <span class="n">PageMeta</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>        <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">SiteHeaders</span><span class="o">.</span><span class="n">from_raw_headers</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">PageMeta</span><span class="o">.</span><span class="n">from_soup</span><span class="p">(</span><span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">))</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="k">def</span> <span class="nf">prep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a>        <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>    <span class="k">def</span> <span class="nf">url_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">parsed</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">parsed</span><span class="o">.</span><span class="n">_fields</span><span class="p">}</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="nd">@property</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_data</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">prep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">prep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="siteheaders">SiteHeaders</h2>
+<p><code>SiteHeaders</code> is a dataclass whose function is to use <a href="https://httpx.org">httpx.Response</a> and extract relevant metadata (<em>last-modified</em>, <em>content-type</em>, etc.).</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+  <div class="doc doc-contents first">
+
+
+
+        <details class="quote">
+          <summary>Source code in <code>pagemeta/headers.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Python</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="k">class</span> <span class="nc">SiteHeaders</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a>    <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="n">etag</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="n">last_modified</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="k">def</span> <span class="nf">from_raw_headers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Headers</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>            <span class="n">content_type</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>            <span class="n">etag</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;etag&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a>            <span class="n">last_modified</span><span class="o">=</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;last-modified&quot;</span><span class="p">]),</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>            <span class="n">date</span><span class="o">=</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]),</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a>        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div><h2 id="pagemeta">PageMeta</h2>
 <p><code>PageMeta</code> is a dataclass whose function is to <a href="https://httpx.org">httpx.get</a> a given URL's metadata (<em>title</em>, <em>description</em>, <em><a href="https://ogp.me/">open graph</a> image</em>) with <a href="https://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a>.</p>
-<h2 id="pagemeta">PageMeta</h2>
 
 
 <div class="doc doc-object doc-class">
