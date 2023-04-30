@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pagemeta"
 description = "Extract Open Graph metadata from a URL via BeautifulSoup."
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Marcelino G. Veloso III <mars@veloso.one>"]
 readme = "README.md"
 license = "MIT"
@@ -20,6 +20,7 @@ python = "^3.11"
 python-dotenv = "^0.21"
 beautifulsoup4 = "^4.11.2"
 httpx = "^0.23.3"
+python-dateutil = "^2.8.2"
 
 [tool.poetry.group.dev.dependencies] # latest as of Jan. 2023
 rich = "^13.3"
